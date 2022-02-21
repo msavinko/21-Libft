@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marlean <marlean@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/18 17:41:36 by marlean           #+#    #+#             */
-/*   Updated: 2022/02/18 11:03:12 by marlean          ###   ########.fr       */
+/*   Created: 2021/11/12 13:08:14 by marlean           #+#    #+#             */
+/*   Updated: 2022/02/17 16:30:14 by marlean          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t count, size_t size)
+int	get_next_line(char **line)
 {
-	void	*ptr;
-	size_t	size_max;
+	int		result;
+	int		i;
+	char	*buffer;
 
-	size_max = 18446744073709551615U;
-	if (size && (count > size_max / size))
-		return (NULL);
-	ptr = malloc(size * count);
-	if (!ptr)
-		return (NULL);
-	ft_bzero(ptr, count * size);
-	return (ptr);
+	buffer = malloc(100000);
+	if (!buffer)
+		return (0);
+	i = 0;
+	*line = buffer;
+	result = read(0, &buffer[i], 1);
+	while (result > 0 && buffer[i] != '\n')
+	{
+		i++;
+		result = read(0, &buffer[i], 1);
+	}	
+	buffer[i] = '\0';
+	return (result);
 }
